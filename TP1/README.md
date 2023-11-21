@@ -35,7 +35,7 @@ Este sistema permite la comunicación bidireccional entre dos procesos, denomina
    ./reader
 3. Seguir las instrucciones proporcionadas por el programa.
 
-## Buenas Prácticas en el Código
+## Buenas prácticas en el código
 
 ### Proceso Writer (writer.c)
 
