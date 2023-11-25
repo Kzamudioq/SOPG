@@ -35,11 +35,10 @@
    
    ```bash
    ./reader
-   ```
-  ¡Listo para recibir órdenes, jefe!
-2. Ejecuta el programa writer en otra terminal:
+    ¡Listo para recibir órdenes, jefe!
+  ``` 2. Ejecuta el programa writer en otra terminal:
 
-   ```bash
+  ```bash
    ./writer
   ```
 3. Observa cómo el programa reader registra todo en log.txt y signals.txt. ¡Es como magia minion!
