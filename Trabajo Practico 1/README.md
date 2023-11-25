@@ -36,7 +36,8 @@
    ```bash
    ./reader
     ¡Listo para recibir órdenes, jefe!
-  ``` 2. Ejecuta el programa writer en otra terminal:
+   ```
+2. Ejecuta el programa writer en otra terminal:
 
   ```bash
    ./writer
