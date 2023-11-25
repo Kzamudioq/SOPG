@@ -16,7 +16,17 @@
 
 ---
 
-## Instrucciones para Compilar 🛠️
+## Función 🛠️
+### writer.c
+El archivo writer.c es el "¡Bello Escritor Banana!" 🍌✨ Maneja la escritura de datos en un Named FIFO. Inicia un bucle que espera ansiosamente las palabras del usuario desde la consola y atiende las señales que le lancen. Las palabras ingresadas son envueltas con un sello de tiempo y depositadas con amor en el Named FIFO. ¡Cuidado! Las señales SIGUSR1 y SIGUSR2 también son bien recibidas y registradas con emojis de celebración. El escritor también es educado y maneja la señal SIGINT (Ctrl+C) para salir con gracia y asegurar que todo quede en orden. ¡Una obra maestra del arte de la escritura! 📝🎉
+
+### reader.c
+
+Ahora, el reader.c, nuestro "Lector de Bananas" 📚🍌, se dedica a leer con entusiasmo los datos del Named FIFO. Los datos, ya sea mensajes de texto o señales, son tratados con respeto. Los mensajes de texto se anotan en el sagrado log.txt, mientras que las señales se guardan en el misterioso signals.txt. Este lector siempre está alerta, esperando nuevas aventuras en el Named FIFO. Juntos, writer.c y reader.c forman un equipo inseparable para una comunicación épica entre procesos. ¡Banana-tástico! 🎉🍌
+
+
+---
+## Instrucciones para Compilar ✨
 
 1. Abre una terminal, ¡y asegúrate de tener tus bananas listas!
 2. Compila el programa `writer.c`:
