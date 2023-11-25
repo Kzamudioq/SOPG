@@ -29,3 +29,11 @@ Este curso ofrece una introducción exhaustiva a los fundamentos y aplicaciones 
 La evaluación se basará en la participación activa en proyectos prácticos, exámenes teóricos y prácticos, así como la asistencia y participación en clases.
 
 Este curso proporciona las habilidades y conocimientos necesarios para desarrollar sistemas operativos eficientes y adaptados a las necesidades de dispositivos embebidos, preparando a los estudiantes para los desafíos del mundo de la ingeniería informática. ¡Esperamos que disfrutes del curso y te desafíes a ti mismo en la exploración de los sistemas operativos en su máxima expresión!
+
+## Autor
+
+[<img src="https://github.com/Kzamudioq/AdM_workspace/assets/138271936/4d923abf-2c49-4e37-905f-2c76f90c3bab" width=200><br><sub>Karen Tatiana Zamudio</sub>](https://github.com/Kzamudioq)
+
+- Ingeniera Topográfica 
+- Universidad Francisco José de Caldas
+
