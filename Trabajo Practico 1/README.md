@@ -91,6 +91,11 @@ ps aux | grep writer
 ¡Stuart dice que anotes el número que aparece, es el ID del proceso Writer!
   ```
 
+<p align="center" width="100%">
+    <img width="60%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/c198a09d-c44d-49c0-a79e-b2de731f15fb"> 
+</p>
+
+
 4. Observa cómo el programa reader registra todo en log.txt y signals.txt. ¡Es como magia minion!
 5. Detener la Ejecución ⛔: ¡Para la fiesta de los minions! Puedes detener la ejecución de ambos procesos presionando Ctrl + C en las terminales donde están trabajando. ¡Y listo! Ahora estás listo para jugar con la comunicación entre procesos. ¡Banana! 🍌
 
