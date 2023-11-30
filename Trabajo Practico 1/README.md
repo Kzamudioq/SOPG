@@ -60,19 +60,20 @@ Ahora, el reader.c, nuestro "Lector de Bananas" 📚🍌, se dedica a leer con e
 ## Uso 🍌🤖
 1. Ejecuta el programa reader para prepararlo para recibir datos:
    
-   ```bash
-   ./reader
-    ¡Listo para recibir órdenes, jefe!
-   El proceso Reader estará esperando datos y registrará en log.txt o signals.txt según lo que reciba.
-   ```
+```bash
+./reader
+¡Listo para recibir órdenes, jefe!
+El proceso Reader estará esperando datos y registrará en log.txt o signals.txt según lo que reciba.
+```
 2. Ejecuta el programa writer en otra terminal:
 
-  ```bash
-   ./writer
+```bash
+./writer
 El proceso Writer estará esperando tus palabras y puede recibir señales SIGUSR1 y SIGUSR2.
 ¡Bob dice que anotes el ID del proceso Writer que aparece en la terminal!
-  ```
+ ```
 3. Envío de Señales 🚨
+
 - Puedes enviar señales al proceso Writer desde otra terminal:
 ```bash
 ¡Enviar SIGUSR1!
@@ -83,18 +84,12 @@ kill -SIGUSR2 <ID_DEL_PROCESO_WRITER>
 
 ¡Bob dice que reemplaces <ID_DEL_PROCESO_WRITER> con el ID real del proceso Writer que anotaste!
   ```
-¿como obtienees el ID del Proceso Writer 🕵️?
-
-Puedes obtener el ID del proceso Writer ejecutando el siguiente comando en una nueva terminal:
+- ¿como obtienees el ID del Proceso Writer 🕵️? puedes obtener el ID del proceso Writer ejecutando el siguiente comando en una nueva terminal:
 ```bash
 ps aux | grep writer
 
-  ```
-o utilizando pgrep:
-```bash
-pgrep writer
-  ```
 ¡Stuart dice que anotes el número que aparece, es el ID del proceso Writer!
+  ```
 
 4. Observa cómo el programa reader registra todo en log.txt y signals.txt. ¡Es como magia minion!
 5. Detener la Ejecución ⛔: ¡Para la fiesta de los minions! Puedes detener la ejecución de ambos procesos presionando Ctrl + C en las terminales donde están trabajando. ¡Y listo! Ahora estás listo para jugar con la comunicación entre procesos. ¡Banana! 🍌
