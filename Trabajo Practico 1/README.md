@@ -91,7 +91,7 @@ ps aux | grep writer
 ¡Stuart dice que anotes el número que aparece, es el ID del proceso Writer!
   ```
 
-<p align="center" width="100%">
+<p align="center" width="70%">
     <img width="60%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/c198a09d-c44d-49c0-a79e-b2de731f15fb"> 
 </p>
 
