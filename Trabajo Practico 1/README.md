@@ -37,7 +37,7 @@
 ## Función 🛠️
 
 <p align="center" width="100%">
-    <img width="60%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/2666f329-5abe-48f7-9841-5b7be5d4210e"> 
+    <img width="100%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/2666f329-5abe-48f7-9841-5b7be5d4210e"> 
 </p>
 
 
