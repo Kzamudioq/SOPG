@@ -1,7 +1,7 @@
 # Comunicación de Procesos con Named FIFOs 🍌🚀
 `Trabajo práctico 1`
 
-¡Hola, amiguitos! Bienvenidos al proyecto de comunicación de procesos usando Named FIFOs. ¡Prepárense para una aventura emocionante en el mundo de los códigos y las bananas! 🍌🎉
+¡Hola amigo humano! 👋 Bienvenido al Proyecto TP1, donde los minions están trabajando arduamente para demostrar la comunicación entre dos procesos usando named pipes (named fifo) en C. ¡Banana! 🍌🎉
 ---
 
 
@@ -21,10 +21,19 @@
     <img width="60%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/bb4a8578-0adb-4d01-b9e4-c2181c62017a"> 
 </p>
 
+---
+
+## Contenido del Proyecto 📁
+
+- `writer.c`: aquí está el código fuente del proceso Writer, donde escribimos cosas.
+- `reader.c`: y aquí está el código fuente del proceso Reader, donde leemos cosas.
+- `log.txt`: un archivo para registrar los datos que el proceso Reader recibe. ¡Bello!
+- `signals.txt`: otro archivo para registrar las señales que el proceso Writer recibe. ¡También bello!
 
 ---
 
 ## Función 🛠️
+
 ### writer.c
 El archivo writer.c es el "¡Bello Escritor Banana!" 🍌✨ Maneja la escritura de datos en un Named FIFO. Inicia un bucle que espera ansiosamente las palabras del usuario desde la consola y atiende las señales que le lancen. Las palabras ingresadas son envueltas con un sello de tiempo y depositadas con amor en el Named FIFO. ¡Cuidado! Las señales SIGUSR1 y SIGUSR2 también son bien recibidas y registradas con emojis de celebración. El escritor también es educado y maneja la señal SIGINT (Ctrl+C) para salir con gracia y asegurar que todo quede en orden. ¡Una obra maestra del arte de la escritura! 📝🎉
 
@@ -40,12 +49,12 @@ Ahora, el reader.c, nuestro "Lector de Bananas" 📚🍌, se dedica a leer con e
 2. Compila el programa `writer.c`:
 
    ```bash
-   gcc -o writer writer.c
+   gcc writer.c -o writer -Wall
    ```
 
 3. Compila el programa reader.c:
    ```bash
-   gcc -o reader reader.c
+   gcc reader.c -o reader -Wall
    ```
 ---
 ## Uso 🍌🤖
@@ -54,19 +63,46 @@ Ahora, el reader.c, nuestro "Lector de Bananas" 📚🍌, se dedica a leer con e
    ```bash
    ./reader
     ¡Listo para recibir órdenes, jefe!
+   El proceso Reader estará esperando datos y registrará en log.txt o signals.txt según lo que reciba.
    ```
 2. Ejecuta el programa writer en otra terminal:
 
   ```bash
    ./writer
+El proceso Writer estará esperando tus palabras y puede recibir señales SIGUSR1 y SIGUSR2.
+¡Bob dice que anotes el ID del proceso Writer que aparece en la terminal!
   ```
-3. Observa cómo el programa reader registra todo en log.txt y signals.txt. ¡Es como magia minion!
+3. Envío de Señales 🚨
+- Puedes enviar señales al proceso Writer desde otra terminal:
+```bash
+¡Enviar SIGUSR1!
+kill -SIGUSR1 <ID_DEL_PROCESO_WRITER>
 
+¡Enviar SIGUSR2!
+kill -SIGUSR2 <ID_DEL_PROCESO_WRITER>
+
+¡Bob dice que reemplaces <ID_DEL_PROCESO_WRITER> con el ID real del proceso Writer que anotaste!
+  ```
+¿como obtienees el ID del Proceso Writer 🕵️?
+
+Puedes obtener el ID del proceso Writer ejecutando el siguiente comando en una nueva terminal:
+```bash
+ps aux | grep writer
+
+  ```
+o utilizando pgrep:
+```bash
+pgrep writer
+  ```
+¡Stuart dice que anotes el número que aparece, es el ID del proceso Writer!
+
+4. Observa cómo el programa reader registra todo en log.txt y signals.txt. ¡Es como magia minion!
+5. Detener la Ejecución ⛔: ¡Para la fiesta de los minions! Puedes detener la ejecución de ambos procesos presionando Ctrl + C en las terminales donde están trabajando. ¡Y listo! Ahora estás listo para jugar con la comunicación entre procesos. ¡Banana! 🍌
 
 ## Archivos generados 📁🍌
 
-- log.txt: Aquí se registran todas las aventuras épicas escritas por el writer.
-- signals.txt: Guarda las señales misteriosas (SIGUSR1 y SIGUSR2) que envía el writer.
+- log.txt: aquí se registran todas las aventuras épicas escritas por el writer.
+- signals.txt: guarda las señales misteriosas (SIGUSR1 y SIGUSR2) que envía el writer.
 
 ## Contribuciones 🍌💬
 ¡Contribuciones son bienvenidas! Si encuentras algún problema, o tienes ideas para mejorar nuestras aventuras, ¡háznoslo saber!
