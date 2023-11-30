@@ -2,6 +2,8 @@
 `Trabajo práctico 1`
 
 ¡Hola amigo humano! 👋 Bienvenido al Proyecto TP1, donde los minions están trabajando arduamente para demostrar la comunicación entre dos procesos usando named pipes (named fifo) en C. ¡Banana! 🍌🎉
+
+
 ---
 
 
@@ -33,6 +35,14 @@
 ---
 
 ## Función 🛠️
+
+<p align="center" width="100%">
+    <img width="60%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/2666f329-5abe-48f7-9841-5b7be5d4210e"> 
+</p>
+
+
+
+
 
 ### writer.c
 El archivo writer.c es el "¡Bello Escritor Banana!" 🍌✨ Maneja la escritura de datos en un Named FIFO. Inicia un bucle que espera ansiosamente las palabras del usuario desde la consola y atiende las señales que le lancen. Las palabras ingresadas son envueltas con un sello de tiempo y depositadas con amor en el Named FIFO. ¡Cuidado! Las señales SIGUSR1 y SIGUSR2 también son bien recibidas y registradas con emojis de celebración. El escritor también es educado y maneja la señal SIGINT (Ctrl+C) para salir con gracia y asegurar que todo quede en orden. ¡Una obra maestra del arte de la escritura! 📝🎉
