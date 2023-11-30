@@ -20,7 +20,7 @@
 - Compilador de C que hable el idioma minion.
 
 <p align="center" width="100%">
-    <img width="60%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/bb4a8578-0adb-4d01-b9e4-c2181c62017a"> 
+    <img width="100%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/bb4a8578-0adb-4d01-b9e4-c2181c62017a"> 
 </p>
 
 ---
