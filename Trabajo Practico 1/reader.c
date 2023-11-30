@@ -35,7 +35,6 @@ int main(void)
 {
     uint8_t inputBuffer[BUFFER_SIZE];
     uint32_t bytesRead;
-    int32_t returnCode, fd;
 
     // Inicializar manejadores de señales y abrir archivos de registro
     initializeSignalHandlers();
@@ -50,14 +49,16 @@ int main(void)
     }
 
     // Crear named fifo. No hace nada si ya existe
-    if ((returnCode = mknod(FIFO_NAME, S_IFIFO | 0666, 0)) != -1)
+    if (mknod(FIFO_NAME, S_IFIFO | 0666, 0) == -1 && errno != EEXIST)
     {
         handleError("Error creando named fifo", EXIT_FAILURE);
     }
 
     // Abrir named fifo. Bloquea hasta que otro proceso lo abre
     printf("Esperando escritores...\n");
-    if ((fd = open(FIFO_NAME, O_RDONLY)) < 0)
+    int fd = open(FIFO_NAME, O_RDONLY);
+
+    if (fd == -1)
     {
         handleError("Error abriendo archivo named fifo", EXIT_FAILURE);
     }
@@ -66,22 +67,17 @@ int main(void)
     printf("Hay un escritor\n");
 
     // Bucle hasta que la llamada de lectura devuelva un valor <= 0
-    do
+    while ((bytesRead = read(fd, inputBuffer, BUFFER_SIZE)) > 0)
     {
-        // Leer datos en el búfer local
-        if ((bytesRead = read(fd, inputBuffer, BUFFER_SIZE)) == -1)
-        {
-            perror("read");
-        }
-        else
-        {
-            inputBuffer[bytesRead] = '\0';
-            printf("Lector: leídos %d bytes: \"%s\"\n", bytesRead, inputBuffer);
+        inputBuffer[bytesRead] = '\0';
+        printf("Lector: leídos %d bytes: \"%s\"\n", bytesRead, inputBuffer);
 
-            // Procesar la entrada y escribir en archivos de registro
-            processInput((const char *)inputBuffer);
-        }
-    } while (bytesRead > 0);
+        // Procesar la entrada y escribir en archivos de registro
+        processInput((const char *)inputBuffer);
+    }
+
+    // Cerrar archivos y salir
+    exitHandler();
 
     return 0;
 }
@@ -153,5 +149,10 @@ void processInput(const char *buffer)
     {
         // Extraer y registrar señal en signals.txt
         fprintf(fsign, "%s %s\n", timeBuffer, buffer + 5);
+    }
+    else
+    {
+        // Registrar texto en log.txt
+        fprintf(flog, "%s %s\n", timeBuffer, buffer);
     }
 }

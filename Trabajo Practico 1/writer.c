@@ -13,7 +13,8 @@
 #define FIFO_NAME "myfifo"
 #define BUFFER_SIZE 300
 
-FILE *flog, *fsign; // Archivos de registro
+FILE *flog; // Archivo de registro
+int fd;    // Descriptor de archivo FIFO
 
 // Función de manejo de errores
 void handleError(const char *message, int exitCode)
@@ -22,45 +23,40 @@ void handleError(const char *message, int exitCode)
     exit(exitCode);
 }
 
-// Manejador de señales para SIGINT
+// Manejador de señales para SIGUSR1 y SIGUSR2
 void signalsHandler(int signo);
 
-// Manejador de salida para cerrar archivos antes de salir
+// Manejador de salida para cerrar archivos y descriptores antes de salir
 void exitHandler();
 
 // Inicializa los manejadores de señales y archivos de registro
 void initializeSignalHandlers();
 
-// Procesa la entrada recibida del FIFO y escribe en archivos de registro
-void processInput(const char *buffer);
-
 int main(void)
 {
     char outputBuffer[BUFFER_SIZE];
-    uint32_t bytesWrote;
-    int32_t returnCode, fd;
+    int32_t bytesWrote;
 
-    // Inicializar manejadores de señales y abrir archivos de registro
+    // Inicializar manejadores de señales y abrir archivo de registro
     initializeSignalHandlers();
 
-    // Crear archivos de registro
+    // Crear archivo de registro
     flog = fopen("log.txt", "a");
-    fsign = fopen("signals.txt", "a");
 
-    if (!flog || !fsign)
+    if (!flog)
     {
-        handleError("Error al abrir archivos de registro", EXIT_FAILURE);
+        handleError("Error al abrir archivo de registro", EXIT_FAILURE);
     }
 
     // Crear named fifo. No hace nada si ya existe
-    if ((returnCode = mknod(FIFO_NAME, S_IFIFO | 0666, 0)) != -1)
+    if (mknod(FIFO_NAME, S_IFIFO | 0666, 0) == -1 && errno != EEXIST)
     {
         handleError("Error creando named fifo", EXIT_FAILURE);
     }
 
     // Abrir named fifo. Bloquea hasta que otro proceso lo abre
     printf("Esperando lectores...\n");
-    if ((fd = open(FIFO_NAME, O_WRONLY)) < 0)
+    if ((fd = open(FIFO_NAME, O_WRONLY)) == -1)
     {
         handleError("Error abriendo archivo named fifo", EXIT_FAILURE);
     }
@@ -74,10 +70,14 @@ int main(void)
         // Obtener texto desde la consola
         fgets(outputBuffer, BUFFER_SIZE, stdin);
 
-        // Manejar señales (Ctrl+C)
-        signalsHandler(SIGINT);
+        // Eliminar el carácter de nueva línea
+        size_t len = strlen(outputBuffer);
+        if (len > 0 && outputBuffer[len - 1] == '\n')
+        {
+            outputBuffer[len - 1] = '\0';
+        }
 
-        // Escribir el buffer en named fifo. Strlen para incluir el carácter de nueva línea
+        // Escribir el buffer en named fifo con el formato correcto
         if ((bytesWrote = write(fd, outputBuffer, strlen(outputBuffer))) == -1)
         {
             perror("write");
@@ -91,20 +91,37 @@ int main(void)
     return 0;
 }
 
-// Manejador de señales para SIGINT
+// Manejador de señales para SIGUSR1 y SIGUSR2
 void signalsHandler(int signo)
 {
-    if (signo == SIGINT)
+    char signalMessage[8];
+    // Formato de mensaje: SIGN:1 o SIGN:2
+    snprintf(signalMessage, sizeof(signalMessage), "SIGN:%d", (signo == SIGUSR1) ? 1 : 2);
+
+    // Escribir la señal en named fifo con el formato correcto
+    if (write(fd, signalMessage, strlen(signalMessage)) == -1)
     {
-        printf("\nRecibida la señal SIGINT - El usuario quiere salir de la aplicación.\n");
-        exitHandler();
+        perror("write");
     }
+
+    // Escribir la señal en el archivo de registro con la hora de registro
+    time_t currentTime;
+    char timeBuffer[24] = {0};
+    time(&currentTime);
+    strftime(timeBuffer, sizeof(timeBuffer), "%Y-%m-%d %H:%M:%S", localtime(&currentTime));
+    fprintf(flog, "%s %s\n", timeBuffer, signalMessage);
 }
 
-// Manejador de salida para cerrar archivos antes de salir
+// Manejador de salida para cerrar archivos y descriptores antes de salir
 void exitHandler()
 {
-    printf("Intentando cerrar los archivos antes de salir.\n");
+    printf("Intentando cerrar los archivos y descriptores antes de salir.\n");
+
+    // Cerrar named fifo
+    unlink(FIFO_NAME);
+
+    // Cerrar descriptor de archivo FIFO
+    close(fd);
 
     if (flog != NULL)
     {
@@ -118,18 +135,6 @@ void exitHandler()
         }
     }
 
-    if (fsign != NULL)
-    {
-        if (fclose(fsign) != 0)
-        {
-            perror("Error al cerrar el archivo de señales");
-        }
-        else
-        {
-            printf("signals.txt cerrado correctamente.\n");
-        }
-    }
-
     printf("Saliendo...\n");
     exit(EXIT_SUCCESS);
 }
@@ -137,47 +142,13 @@ void exitHandler()
 // Inicializa los manejadores de señales y archivos de registro
 void initializeSignalHandlers()
 {
+    // Registrar el manejador de señales SIGUSR1 y SIGUSR2
+    signal(SIGUSR1, signalsHandler);
+    signal(SIGUSR2, signalsHandler);
+
     // Registrar el manejador de salida
     if (atexit(exitHandler) != 0)
     {
         handleError("Error al registrar el manejador de salida", EXIT_FAILURE);
-    }
-
-    // Configurar el manejador de señales SIGINT
-    struct sigaction sa;
-    sa.sa_handler = signalsHandler;
-    sa.sa_flags = SA_RESTART;
-    sigemptyset(&sa.sa_mask);
-
-    if (sigaction(SIGINT, &sa, NULL) != 0)
-    {
-        handleError("Error al configurar el manejador de señales SIGINT", EXIT_FAILURE);
-    }
-}
-
-// Procesa la entrada recibida del FIFO y escribe en archivos de registro
-void processInput(const char *buffer)
-{
-    time_t currentTime;
-    char timeBuffer[24] = {0};
-
-    if (buffer == NULL)
-    {
-        fprintf(stderr, "Error: Se recibió un buffer nulo\n");
-        return;
-    }
-
-    time(&currentTime);
-    strftime(timeBuffer, sizeof(timeBuffer), "%Y-%m-%d %H:%M:%S ", localtime(&currentTime));
-
-    if (strncmp(buffer, "DATA:", 5) == 0)
-    {
-        // Extraer y registrar datos en log.txt
-        fprintf(flog, "%s %s\n", timeBuffer, buffer + 5);
-    }
-    else if (strncmp(buffer, "SIGN:", 5) == 0)
-    {
-        // Extraer y registrar señal en signals.txt
-        fprintf(fsign, "%s %s\n", timeBuffer, buffer + 5);
     }
 }
