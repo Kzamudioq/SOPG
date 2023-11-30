@@ -1,81 +1,115 @@
-# Sistema de Comunicación entre Procesos con Named FIFO
+# Comunicación de Procesos con Named FIFOs 🍌🚀
 `Trabajo práctico 1`
 
-Este sistema permite la comunicación bidireccional entre dos procesos, denominados `writer` y `reader`, a través de un Named FIFO. El `writer` puede recibir texto desde la consola y señales, mientras que el `reader` registra el texto y las señales en archivos separados.
+¡Hola amigo humano! 👋 Bienvenido al Proyecto TP1, donde los minions están trabajando arduamente para demostrar la comunicación entre dos procesos usando named pipes (named fifo) en C. ¡Banana! 🍌🎉
+---
 
-## Estructura del Sistema
 
-### Proceso Writer
+<p align="center" width="100%">
+    <img width="60%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/de274c78-c5b1-4ec7-9dfb-88a55dcb7fcb"> 
+</p>
 
-- **Objetivo**: Inicia y espera que el usuario ingrese texto hasta que presiona ENTER. Luego, escribe los datos en un Named FIFO con el formato `DATA:XXXXXXXXX`. Además, puede recibir las señales SIGUSR1 y SIGUSR2 y escribe en el Named FIFO los mensajes `SIGN:1` o `SIGN:2`, respectivamente.
 
-- **Funcionamiento**:
-  - Espera que el usuario ingrese texto.
-  - Escribe en el Named FIFO con el formato `DATA:XXXXXXXXX`.
-  - Puede recibir señales SIGUSR1 o SIGUSR2 y escribe en el Named FIFO los mensajes `SIGN:1` o `SIGN:2`.
 
-### Proceso Reader
 
-- **Objetivo**: Lee los datos del Named FIFO y, según los encabezados "DATA" o "SIGN", escribe en el archivo `log.txt` o `signals.txt`.
+## Requisitos del Sistema 🖥️
 
-- **Funcionamiento**:
-  - Lee los datos del Named FIFO.
-  - Escribe en `log.txt` si el encabezado es "DATA".
-  - Escribe en `signals.txt` si el encabezado es "SIGN".
+- Sistema operativo minion-compatible (algo como Unix, ¡banana Unix!).
+- Compilador de C que hable el idioma minion.
 
-## Ejecución del Sistema
+<p align="center" width="100%">
+    <img width="60%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/bb4a8578-0adb-4d01-b9e4-c2181c62017a"> 
+</p>
 
-1. Compilar los archivos de código fuente:
+---
+
+## Contenido del Proyecto 📁
+
+- `writer.c`: aquí está el código fuente del proceso Writer, donde escribimos cosas.
+- `reader.c`: y aquí está el código fuente del proceso Reader, donde leemos cosas.
+- `log.txt`: un archivo para registrar los datos que el proceso Reader recibe. ¡Bello!
+- `signals.txt`: otro archivo para registrar las señales que el proceso Writer recibe. ¡También bello!
+
+---
+
+## Función 🛠️
+
+### writer.c
+El archivo writer.c es el "¡Bello Escritor Banana!" 🍌✨ Maneja la escritura de datos en un Named FIFO. Inicia un bucle que espera ansiosamente las palabras del usuario desde la consola y atiende las señales que le lancen. Las palabras ingresadas son envueltas con un sello de tiempo y depositadas con amor en el Named FIFO. ¡Cuidado! Las señales SIGUSR1 y SIGUSR2 también son bien recibidas y registradas con emojis de celebración. El escritor también es educado y maneja la señal SIGINT (Ctrl+C) para salir con gracia y asegurar que todo quede en orden. ¡Una obra maestra del arte de la escritura! 📝🎉
+
+### reader.c
+
+Ahora, el reader.c, nuestro "Lector de Bananas" 📚🍌, se dedica a leer con entusiasmo los datos del Named FIFO. Los datos, ya sea mensajes de texto o señales, son tratados con respeto. Los mensajes de texto se anotan en el sagrado log.txt, mientras que las señales se guardan en el misterioso signals.txt. Este lector siempre está alerta, esperando nuevas aventuras en el Named FIFO. Juntos, writer.c y reader.c forman un equipo inseparable para una comunicación épica entre procesos. ¡Banana-tástico! 🎉🍌
+
+
+---
+## Instrucciones para Compilar ✨
+
+1. Abre una terminal, ¡y asegúrate de tener tus bananas listas!
+2. Compila el programa `writer.c`:
+
    ```bash
-   gcc writer.c -o writer -pthread
-   gcc reader.c -o reader
-2. Ejecutar los procesos en terminales separadas:
+   gcc writer.c -o writer -Wall
+   ```
+
+3. Compila el programa reader.c:
    ```bash
-   ./writer
-   ./reader
-3. Seguir las instrucciones proporcionadas por el programa.
+   gcc reader.c -o reader -Wall
+   ```
+---
+## Uso 🍌🤖
+1. Ejecuta el programa reader para prepararlo para recibir datos:
+   
+```bash
+./reader
+¡Listo para recibir órdenes, jefe!
+El proceso Reader estará esperando datos y registrará en log.txt o signals.txt según lo que reciba.
+```
+2. Ejecuta el programa writer en otra terminal:
 
-## Buenas prácticas en el código
+```bash
+./writer
+El proceso Writer estará esperando tus palabras y puede recibir señales SIGUSR1 y SIGUSR2.
+¡Bob dice que anotes el ID del proceso Writer que aparece en la terminal!
+ ```
+3. Envío de Señales 🚨
 
-### Proceso Writer (writer.c)
+- Puedes enviar señales al proceso Writer desde otra terminal:
+```bash
+¡Enviar SIGUSR1!
+kill -SIGUSR1 <ID_DEL_PROCESO_WRITER>
 
-#### 1. Manejo de Señales
-   - Implementación de manejo de señales (SIGUSR1, SIGUSR2, SIGPIPE, SIGINT).
-   - Uso de la función `signalHandler` para gestionar las señales SIGUSR1 y SIGUSR2.
+¡Enviar SIGUSR2!
+kill -SIGUSR2 <ID_DEL_PROCESO_WRITER>
 
-####  2. Comunicación Entre Procesos
-   - Uso de Named FIFO (`TP_FIFO`) para la comunicación entre procesos.
-   - Escritura en el Named FIFO con formato `DATA:XXXXXXXXX` para los datos de texto.
+¡Bob dice que reemplaces <ID_DEL_PROCESO_WRITER> con el ID real del proceso Writer que anotaste!
+  ```
+- ¿como obtienees el ID del Proceso Writer 🕵️? puedes obtener el ID del proceso Writer ejecutando el siguiente comando en una nueva terminal:
+```bash
+ps aux | grep writer
 
-####  3. Manejo de Errores
-   - Funciones como `write_to_fifo` para gestionar errores al escribir en el FIFO.
-   - Funciones como `initialize_signal_handlers` para gestionar errores en la inicialización de manejadores de señales.
+¡Stuart dice que anotes el número que aparece, es el ID del proceso Writer!
+  ```
 
-####  4. Seguridad en Funciones
-   - Verificación de punteros antes de su uso para evitar comportamientos indefinidos.
-   - Protección contra cierre accidental del FIFO antes de salir (`exit_handler`).
+<p align="center" width="40%">
+    <img width="40%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/c198a09d-c44d-49c0-a79e-b2de731f15fb"> 
+</p>
 
-####  5. Modularización y Funciones
-   - Uso de funciones para tareas específicas, mejorando la modularización y la legibilidad del código.
-   - Función `background_signal_thread` para manejar las señales en un hilo en segundo plano.
 
-### Proceso Reader (reader.c)
+4. Observa cómo el programa reader registra todo en log.txt y signals.txt. ¡Es como magia minion!
+5. Detener la Ejecución ⛔: ¡Para la fiesta de los minions! Puedes detener la ejecución de ambos procesos presionando Ctrl + C en las terminales donde están trabajando. ¡Y listo! Ahora estás listo para jugar con la comunicación entre procesos. ¡Banana! 🍌
 
-####  1. Manejo de Señales
-   - Registro de señales, con `SIGINT` manejado por `signals_handler`.
+## Archivos generados 📁🍌
 
-####  2. Comunicación Entre Procesos
-   - Lectura de datos desde el Named FIFO.
-   - Escritura en archivos (`log.txt`, `signals.txt`) según los encabezados "DATA" o "SIGN".
+- log.txt: aquí se registran todas las aventuras épicas escritas por el writer.
+- signals.txt: guarda las señales misteriosas (SIGUSR1 y SIGUSR2) que envía el writer.
 
-####  3. Manejo de Errores
-   - Cierre seguro de archivos en `exit_handler` para evitar pérdida de datos.
+## Contribuciones 🍌💬
+¡Contribuciones son bienvenidas! Si encuentras algún problema, o tienes ideas para mejorar nuestras aventuras, ¡háznoslo saber!
 
-####  4. Seguridad en Funciones
-   - Comprobación de archivos antes de cerrarlos para evitar comportamientos indefinidos.
-
-####  5. Modularización y Funciones
-   - Uso de funciones como `exit_handler` y `initialize_signal_handlers` para gestionar la salida y las señales.
+<p align="center" width="100%">
+    <img width="60%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/f0635631-1a24-422c-973b-d208f038e643"> 
+</p>
 
 ---
 
