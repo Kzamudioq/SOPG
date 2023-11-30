@@ -94,6 +94,12 @@ kill -SIGUSR2 <ID_DEL_PROCESO_WRITER>
 
 ¡Bob dice que reemplaces <ID_DEL_PROCESO_WRITER> con el ID real del proceso Writer que anotaste!
   ```
+
+<p align="center" width="40%">
+    <img width="40%" src="(https://github.com/Kzamudioq/SOPG/assets/138271936/9ce3fb9a-d20e-4927-9d1e-029d3da844f0"> 
+</p>
+
+
 - ¿como obtienees el ID del Proceso Writer 🕵️? puedes obtener el ID del proceso Writer ejecutando el siguiente comando en una nueva terminal:
 ```bash
 ps aux | grep writer
