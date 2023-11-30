@@ -92,7 +92,7 @@ ps aux | grep writer
   ```
 
 <p align="center" width="40%">
-    <img width="60%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/c198a09d-c44d-49c0-a79e-b2de731f15fb"> 
+    <img width="40%" src="https://github.com/Kzamudioq/SOPG/assets/138271936/c198a09d-c44d-49c0-a79e-b2de731f15fb"> 
 </p>
 
 
